@@ -29,8 +29,7 @@ var gitCommandFile = f => {
 }
 
 var gitCommand = (o) => {
-	var c = `git log --pretty=format:'{%n  "commit": "%H",%n  "author": "%an <%ae>",%n  "date": "%ad",%n  "message": "%f"%n},' ${o}`
-	console.log(c)
+	var c = `git log --pretty=format:'{%n  "commit": "%H",%n  "author": "%an <%ae>",%n  "date": "%ad",%n  "message": "%s"%n},' ${o}`
 	return c
 }
 
