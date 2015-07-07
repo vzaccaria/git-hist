@@ -91,7 +91,7 @@ var outputMarkdown = function (data) {
         if (d.length > 0) {
             console.log("\n# " + descs[t] + "\n");
             _.forEach(d, function (c) {
-                console.log("-    " + c.message + " (" + c.date + ") - " + c.commit);
+                console.log("-    " + c.message + " (" + c.date + ") - @" + c.commit);
             });
         }
     });

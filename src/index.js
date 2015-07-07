@@ -90,7 +90,7 @@ var outputMarkdown = data => {
         if (d.length > 0) {
             console.log(`\n# ${descs[t]}\n`)
             _.forEach(d, (c) => {
-                console.log(`-    ${c.message} (${c.date}) - ${c.commit}`);
+                console.log(`-    ${c.message} (${c.date}) - @${c.commit}`);
             })
         }
     })
