@@ -6,6 +6,7 @@
 
 # Bug fixes
 
+-     not empty output file (Tue Jul 7 19:42:22 2015 +0200) - [view](../../commit/1933a38a6033d0dd7490d4d6c5852bf0015538fc) 
 -     return code that reflects repo clean status (Tue Jul 7 19:32:04 2015 +0200) - [view](../../commit/79ea5fe30aafd996456d8a127e91fc6b60454ef1) 
 -     promisify all fs' (Tue Jul 7 19:23:12 2015 +0200) - [view](../../commit/6b07a5c4734f466e52410260ef9f23f1c4d63473) 
 -     url for commits (Tue Jul 7 11:20:36 2015 +0200) - [view](../../commit/29b3f0b245dd6b093bb298fe79ecd07a2742cc00) 
