@@ -123,7 +123,6 @@ var outputMarkdown = function (data, file) {
         }
     });
     console.log("Writing " + file);
-    console.log(content);
     return fs.writeFileAsync(file, content);
 };
 
