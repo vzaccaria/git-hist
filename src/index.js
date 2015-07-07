@@ -38,7 +38,7 @@ var checkStatus = () => {
     return $s.execAsync("git status -s", {
         silent: true
     }).then(it => {
-		console.log(it)
+        console.log(it)
         if (it.length > 0) {
             return $b.reject("Sorry, repo not clean")
         } else {
@@ -56,10 +56,16 @@ var getGitHistory = (opts) => {
     })
 }
 
-var getJson = (file, opts) => {
+var getJson = (file, opts, nocheck) => {
     "use strict"
     if (_.isNull(file)) {
-        return checkStatus().then(getGitHistory)
+        if (!nocheck) {
+            return checkStatus().then( () => {
+                return getGitHistory(opts)
+            })
+        } else {
+            return getGitHistory(opts)
+        }
     } else {
         return $b.resolve(JSON.parse(gitCommandFile(file)))
     }
@@ -73,8 +79,9 @@ var getOptions = doc => {
     var help = getOption('-h', '--help', false, o)
     var outfile = o['OUTFILE']
     var opts = o['--opts'] || '';
+    var nocheck = o['--nostatus'] || false;
     return {
-        help, file, opts, outfile
+        help, file, opts, outfile, nocheck
     }
 }
 
@@ -107,12 +114,13 @@ var outputMarkdown = (data, file) => {
             }
         })
         if (d.length > 0) {
-            content = content + `\n# ${descs[t]}\n`
+            content = content + `\n# ${descs[t]}\n\n`
             _.forEach(d, (c) => {
-                content = content + `-    ${c.message} (${c.date}) - [view](../../commit/${c.commit})`;
+                content = content + `-    ${c.message} (${c.date}) - [view](../../commit/${c.commit}) \n`;
             })
         }
     })
+	console.log(`Writing ${file}`)
     return fs.writeFileAsync(file, content)
 }
 
@@ -121,9 +129,11 @@ var doc = fs.readFileSync(__dirname + "/docs/usage.md", 'utf8')
 var main = () => {
     "use strict"
     var {
-        file, opts, outfile
+        file, opts, outfile, nocheck
     } = (getOptions(doc))
-    getJson(file, opts).then(outputMarkdown, outfile).then(() => {
+    getJson(file, opts, nocheck).then( (content) => {
+		outputMarkdown(content, outfile)
+	}).then(() => {
         console.log("done.")
     }).caught(it => {
         console.log(`not done. ${it}`)

@@ -60,10 +60,16 @@ var getGitHistory = function (opts) {
     });
 };
 
-var getJson = function (file, opts) {
+var getJson = function (file, opts, nocheck) {
     "use strict";
     if (_.isNull(file)) {
-        return checkStatus().then(getGitHistory);
+        if (!nocheck) {
+            return checkStatus().then(function () {
+                return getGitHistory(opts);
+            });
+        } else {
+            return getGitHistory(opts);
+        }
     } else {
         return $b.resolve(JSON.parse(gitCommandFile(file)));
     }
@@ -76,8 +82,9 @@ var getOptions = function (doc) {
     var help = getOption("-h", "--help", false, o);
     var outfile = o.OUTFILE;
     var opts = o["--opts"] || "";
+    var nocheck = o["--nostatus"] || false;
     return {
-        help: help, file: file, opts: opts, outfile: outfile
+        help: help, file: file, opts: opts, outfile: outfile, nocheck: nocheck
     };
 };
 
@@ -108,12 +115,13 @@ var outputMarkdown = function (data, file) {
             }
         });
         if (d.length > 0) {
-            content = content + ("\n# " + descs[t] + "\n");
+            content = content + ("\n# " + descs[t] + "\n\n");
             _.forEach(d, function (c) {
-                content = content + ("-    " + c.message + " (" + c.date + ") - [view](../../commit/" + c.commit + ")");
+                content = content + ("-    " + c.message + " (" + c.date + ") - [view](../../commit/" + c.commit + ") \n");
             });
         }
     });
+    console.log("Writing " + file);
     return fs.writeFileAsync(file, content);
 };
 
@@ -127,8 +135,11 @@ var main = function () {
     var file = _getOptions.file;
     var opts = _getOptions.opts;
     var outfile = _getOptions.outfile;
+    var nocheck = _getOptions.nocheck;
 
-    getJson(file, opts).then(outputMarkdown, outfile).then(function () {
+    getJson(file, opts, nocheck).then(function (content) {
+        outputMarkdown(content, outfile);
+    }).then(function () {
         console.log("done.");
     }).caught(function (it) {
         console.log("not done. " + it);
