@@ -41,10 +41,11 @@ var checkStatus = function () {
     return $s.execAsync("git status -s", {
         silent: true
     }).then(function (it) {
+        console.log(it);
         if (it.length > 0) {
             return $b.reject("Sorry, repo not clean");
         } else {
-            return 0;
+            return $b.resolve("Ok.");
         }
     });
 };
