@@ -15,16 +15,15 @@ generateProject(_ => {
 
     _.collect("docs", _ => {
         _.cmd("./node_modules/.bin/mustache package.json docs/readme.md | ./node_modules/.bin/stupid-replace '~USAGE~' -f docs/usage.md > readme.md")
-		_.cmd("./index.js > history.md")
-		_.cmd("hub cm 'update docs and history.md'")
+        _.cmd("./index.js > history.md")
+        _.cmd("mkdir -p ./man")
+        _.cmd("pandoc -s -f markdown -t man readme.md > ./man/git-hist.1")
+        _.cmd("hub cm 'update docs and history.md'")
     })
 
     _.collectSeq("all", _ => {
         _.collect("build", _ => {
             _.babel("src/*.js")
-            _.cmd("mkdir -p ./man")
-			_.cmd("make docs")
-            _.cmd("pandoc -s -f markdown -t man readme.md > ./man/git-hist.1")
         })
         _.cmd("((echo '#!/usr/bin/env node') && cat ./lib/index.js) > index.js", "./lib/index.js")
         _.cmd("chmod +x ./index.js")
