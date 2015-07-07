@@ -140,7 +140,7 @@ var main = function () {
     var nocheck = _getOptions.nocheck;
 
     getJson(file, opts, nocheck).then(function (content) {
-        outputMarkdown(content, outfile);
+        return outputMarkdown(content, outfile);
     }).then(function () {
         console.log("done.");
         process.exit(0);

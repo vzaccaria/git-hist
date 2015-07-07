@@ -134,7 +134,7 @@ var main = () => {
         file, opts, outfile, nocheck
     } = (getOptions(doc))
     getJson(file, opts, nocheck).then( (content) => {
-		outputMarkdown(content, outfile)
+		return outputMarkdown(content, outfile)
 	}).then(() => {
         console.log("done.")
 		process.exit(0)
