@@ -1,5 +1,5 @@
 Usage:
-    git-hist [ -f FILE ] [ -o OPTS ]
+    git-hist OUTFILE [ -f FILE ] [ -o OPTS ] 
     git-hist ( -h | --help )
 
 Options:
@@ -7,6 +7,5 @@ Options:
     -f, --file FILE         read log from file
     -h, --help              help for git-hist
 
-Commands:
-
 Arguments:
+    OUTFILE                 write markdown to this file

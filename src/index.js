@@ -29,19 +29,35 @@ var gitCommandFile = f => {
 }
 
 var gitCommand = (o) => {
-	var c = `git log --pretty=format:'{%n  "commit": "%H",%n  "author": "%an <%ae>",%n  "date": "%ad",%n  "message": "%s"%n},' ${o}`
-	return c
+    var c = `git log --pretty=format:'{%n  "commit": "%H",%n  "author": "%an <%ae>",%n  "date": "%ad",%n  "message": "%s"%n},' ${o}`
+    return c
+}
+
+var checkStatus = () => {
+    return $s.execAsync("git status -s", {
+        silent: true
+    }).then(it => {
+        if (it.length > 0) {
+            return $b.reject("Sorry, repo not clean")
+        } else {
+            return 0;
+        }
+    })
+}
+
+var getGitHistory = (opts) => {
+    return $s.execAsync(gitCommand(opts), {
+        silent: true
+    }).then((output) => {
+        var s = `[${output.replace(/,$/gi, '')}]`
+        return JSON.parse(s)
+    })
 }
 
 var getJson = (file, opts) => {
     "use strict"
     if (_.isNull(file)) {
-        return $s.execAsync(gitCommand(opts), {
-            silent: true
-        }).then((output) => {
-            var s = `[${output.replace(/,$/gi, '')}]`
-            return JSON.parse(s)
-        })
+        return checkStatus().then(getGitHistory)
     } else {
         return $b.resolve(JSON.parse(gitCommandFile(file)))
     }
@@ -53,9 +69,10 @@ var getOptions = doc => {
     var o = docopt(doc)
     var file = getOption('-f', '--file', null, o)
     var help = getOption('-h', '--help', false, o)
+    var outfile = o['OUTFILE']
     var opts = o['--opts'] || '';
     return {
-        help, file, opts
+        help, file, opts, outfile
     }
 }
 
@@ -76,8 +93,8 @@ var descs = {
 
 
 
-var outputMarkdown = data => {
-
+var outputMarkdown = (data, file) => {
+    var content = ""
     _.map(tags, (t) => {
         var d = _.filter(data, it => {
             if ($S(it.message).contains(`${t}:`)) {
@@ -88,12 +105,13 @@ var outputMarkdown = data => {
             }
         })
         if (d.length > 0) {
-            console.log(`\n# ${descs[t]}\n`)
+            content = content + `\n# ${descs[t]}\n`
             _.forEach(d, (c) => {
-                console.log(`-    ${c.message} (${c.date}) - [view](../../commit/${c.commit})`);
+                content = content + `-    ${c.message} (${c.date}) - [view](../../commit/${c.commit})`;
             })
         }
     })
+    return $b.promisify(fs.writeFile)(file, content)
 }
 
 var doc = fs.readFileSync(__dirname + "/docs/usage.md", 'utf8')
@@ -101,9 +119,13 @@ var doc = fs.readFileSync(__dirname + "/docs/usage.md", 'utf8')
 var main = () => {
     "use strict"
     var {
-        help, file, opts
+        file, opts, outfile
     } = (getOptions(doc))
-    getJson(file, opts).then(outputMarkdown)
+    getJson(file, opts).then(outputMarkdown, outfile).then(() => {
+        console.log("done.")
+    }).caught(it => {
+        console.log(`not done. ${it}`)
+    })
 }
 
 main()

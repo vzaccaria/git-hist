@@ -37,15 +37,31 @@ var gitCommand = function (o) {
     return c;
 };
 
+var checkStatus = function () {
+    return $s.execAsync("git status -s", {
+        silent: true
+    }).then(function (it) {
+        if (it.length > 0) {
+            return $b.reject("Sorry, repo not clean");
+        } else {
+            return 0;
+        }
+    });
+};
+
+var getGitHistory = function (opts) {
+    return $s.execAsync(gitCommand(opts), {
+        silent: true
+    }).then(function (output) {
+        var s = "[" + output.replace(/,$/gi, "") + "]";
+        return JSON.parse(s);
+    });
+};
+
 var getJson = function (file, opts) {
     "use strict";
     if (_.isNull(file)) {
-        return $s.execAsync(gitCommand(opts), {
-            silent: true
-        }).then(function (output) {
-            var s = "[" + output.replace(/,$/gi, "") + "]";
-            return JSON.parse(s);
-        });
+        return checkStatus().then(getGitHistory);
     } else {
         return $b.resolve(JSON.parse(gitCommandFile(file)));
     }
@@ -56,9 +72,10 @@ var getOptions = function (doc) {
     var o = docopt(doc);
     var file = getOption("-f", "--file", null, o);
     var help = getOption("-h", "--help", false, o);
+    var outfile = o.OUTFILE;
     var opts = o["--opts"] || "";
     return {
-        help: help, file: file, opts: opts
+        help: help, file: file, opts: opts, outfile: outfile
     };
 };
 
@@ -77,8 +94,8 @@ var descs = {
     chore: "Changes to the build process"
 };
 
-var outputMarkdown = function (data) {
-
+var outputMarkdown = function (data, file) {
+    var content = "";
     _.map(tags, function (t) {
         var d = _.filter(data, function (it) {
             if ($S(it.message).contains("" + t + ":")) {
@@ -89,12 +106,13 @@ var outputMarkdown = function (data) {
             }
         });
         if (d.length > 0) {
-            console.log("\n# " + descs[t] + "\n");
+            content = content + ("\n# " + descs[t] + "\n");
             _.forEach(d, function (c) {
-                console.log("-    " + c.message + " (" + c.date + ") - [view](../../commit/" + c.commit + ")");
+                content = content + ("-    " + c.message + " (" + c.date + ") - [view](../../commit/" + c.commit + ")");
             });
         }
     });
+    return $b.promisify(fs.writeFile)(file, content);
 };
 
 var doc = fs.readFileSync(__dirname + "/docs/usage.md", "utf8");
@@ -104,11 +122,15 @@ var main = function () {
 
     var _getOptions = getOptions(doc);
 
-    var help = _getOptions.help;
     var file = _getOptions.file;
     var opts = _getOptions.opts;
+    var outfile = _getOptions.outfile;
 
-    getJson(file, opts).then(outputMarkdown);
+    getJson(file, opts).then(outputMarkdown, outfile).then(function () {
+        console.log("done.");
+    }).caught(function (it) {
+        console.log("not done. " + it);
+    });
 };
 
 main();
