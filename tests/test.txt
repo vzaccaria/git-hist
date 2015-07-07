@@ -1,0 +1,84 @@
+{
+  "commit": "5e1e4a9c87b865de4b162c0fc91441b54d55f315",
+  "author": "Vittorio Zaccaria <vittorio.zaccaria@gmail.com>",
+  "date": "Mon Jul 6 16:32:30 2015 +0200",
+  "message": "fix compilation of top entity"
+},
+{
+  "commit": "8940f50e762d7552dedf707dd3c16b007455c3db",
+  "author": "Vittorio Zaccaria <vittorio.zaccaria@gmail.com>",
+  "date": "Mon Jul 6 15:47:41 2015 +0200",
+  "message": "Merge branch 'features/vhdl-testbench'"
+},
+{
+  "commit": "ee39307477651f51bc6c98dbdac7d1507c06fbfd",
+  "author": "Vittorio Zaccaria <vittorio.zaccaria@gmail.com>",
+  "date": "Mon Jul 6 15:46:36 2015 +0200",
+  "message": "fix: Fix gitignore"
+},
+{
+  "commit": "d0b5e4628690e932aa2fc35b4529e869a0ce09e3",
+  "author": "Vittorio Zaccaria <vittorio.zaccaria@gmail.com>",
+  "date": "Mon Jul 6 15:43:16 2015 +0200",
+  "message": "refactor: Move simulation data into external file for testbench generation"
+},
+{
+  "commit": "ccf0095757aaa8d688a93dea9928b9ee3fc1bede",
+  "author": "Vittorio Zaccaria <vittorio.zaccaria@gmail.com>",
+  "date": "Mon Jul 6 15:31:51 2015 +0200",
+  "message": "fix test output"
+},
+{
+  "commit": "24635999cd9cf0cd797a21a13bb91a410e40e8e0",
+  "author": "Vittorio Zaccaria <vittorio.zaccaria@gmail.com>",
+  "date": "Mon Jul 6 15:25:19 2015 +0200",
+  "message": "Change signatures for testbench helpers and derive Lift instances for Inputs and outputs"
+},
+{
+  "commit": "7372e5e30f18678f6cb0acd7be3cfb6565d649e0",
+  "author": "Vittorio Zaccaria <vittorio.zaccaria@gmail.com>",
+  "date": "Mon Jul 6 15:24:50 2015 +0200",
+  "message": "Remove temporary files"
+},
+{
+  "commit": "e973190ca47ee988712420083fa92d6683370f93",
+  "author": "Vittorio Zaccaria <vittorio.zaccaria@gmail.com>",
+  "date": "Mon Jul 6 15:08:46 2015 +0200",
+  "message": "add initial testbench implementation"
+},
+{
+  "commit": "cbdaff5fa16974c859e5bcaf45be7f969708bf54",
+  "author": "Vittorio Zaccaria <vittorio.zaccaria@gmail.com>",
+  "date": "Wed Jun 24 14:51:56 2015 +0200",
+  "message": "change readme"
+},
+{
+  "commit": "14c7f717a3ee5ecd2db32aed98a3b21b53071622",
+  "author": "Vittorio Zaccaria <vittorio.zaccaria@gmail.com>",
+  "date": "Wed Jun 24 14:47:45 2015 +0200",
+  "message": "add docker instructions and Dockerfile"
+},
+{
+  "commit": "95ba83e3c67cfdc8001a31be2cebe750b6f9eeb8",
+  "author": "Vittorio Zaccaria <vittorio.zaccaria@gmail.com>",
+  "date": "Wed Jun 24 14:45:14 2015 +0200",
+  "message": "Fix readme"
+},
+{
+  "commit": "5d3c94219f5237b156f550e6a44ef9727c4054a9",
+  "author": "Vittorio Zaccaria <vittorio.zaccaria@gmail.com>",
+  "date": "Tue Jun 23 17:02:07 2015 +0200",
+  "message": "add readme"
+},
+{
+  "commit": "b2d6b50d319fc025c5b7fb1b730b23fe9c311e29",
+  "author": "Vittorio Zaccaria <vittorio.zaccaria@gmail.com>",
+  "date": "Tue Jun 23 16:52:57 2015 +0200",
+  "message": "Add haskell sources"
+},
+{
+  "commit": "482e3640f3f08f65005222767f092fb2438ef73f",
+  "author": "filippo.melzani <filippo.melzani@st.com>",
+  "date": "Fri Jun 19 14:53:31 2015 +0200",
+  "message": "First test document added"
+},

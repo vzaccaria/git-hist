@@ -1,0 +1,14 @@
+{
+  "env": {
+    "es6": true,
+    "node": true,
+    "shelljs": true
+  },
+  "rules": {
+    "quotes": [1, "single"],
+    "no-extra-semi": 0,
+    "semi": 0,
+    "eol-last": 0,
+    "no-shadow": 0 
+  }
+}
