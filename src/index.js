@@ -42,6 +42,7 @@ var checkStatus = () => {
         if (it.length > 0) {
             return $b.reject("Sorry, repo not clean")
         } else {
+			console.log('ok')
             return $b.resolve("Ok.");
         }
     })
@@ -121,6 +122,7 @@ var outputMarkdown = (data, file) => {
         }
     })
 	console.log(`Writing ${file}`)
+	console.log(content)
     return fs.writeFileAsync(file, content)
 }
 
