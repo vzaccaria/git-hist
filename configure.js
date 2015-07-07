@@ -15,6 +15,8 @@ generateProject(_ => {
 
     _.collect("docs", _ => {
         _.cmd("./node_modules/.bin/mustache package.json docs/readme.md | ./node_modules/.bin/stupid-replace '~USAGE~' -f docs/usage.md > readme.md")
+		_.cmd("./index.js > history.md")
+		_.cmd("hub cm 'update history.md'")
     })
 
     _.collectSeq("all", _ => {
