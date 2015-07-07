@@ -5,6 +5,7 @@
 
 # Bug fixes
 
+-     remove spurious @ (Tue Jul 7 11:19:04 2015 +0200) - [view](../../commits/@54b744672f165939aced040d6c637b7528d7c2b2)
 -     use relative paths in links (Tue Jul 7 11:18:02 2015 +0200) - [view](../../commits/@68909c562976c14be7a303387371b95bc94edad6)
 -     change output of git form %f to %s (Tue Jul 7 10:56:52 2015 +0200) - [view](../../commits/@810cd3e22d90bf5a52fd03a882cece8bd30d9d0c)
 
