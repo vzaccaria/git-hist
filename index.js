@@ -141,8 +141,10 @@ var main = function () {
         outputMarkdown(content, outfile);
     }).then(function () {
         console.log("done.");
+        process.exit(0);
     }).caught(function (it) {
         console.log("not done. " + it);
+        process.exit(1);
     });
 };
 

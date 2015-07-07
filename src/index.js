@@ -135,8 +135,10 @@ var main = () => {
 		outputMarkdown(content, outfile)
 	}).then(() => {
         console.log("done.")
+		process.exit(0)
     }).caught(it => {
         console.log(`not done. ${it}`)
+		process.exit(1)
     })
 }
 
