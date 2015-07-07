@@ -8,6 +8,7 @@ var $S = require('string')
 var $s = require('shelljs')
 var $b = require('bluebird')
 $s = $b.promisifyAll($s)
+fs = $b.promisifyAll(fs)
 
 var getOption = (a, b, def, o) => {
     "use strict"
@@ -112,7 +113,7 @@ var outputMarkdown = (data, file) => {
             })
         }
     })
-    return $b.promisify(fs.writeFile)(file, content)
+    return fs.writeFileAsync(file, content)
 }
 
 var doc = fs.readFileSync(__dirname + "/docs/usage.md", 'utf8')
