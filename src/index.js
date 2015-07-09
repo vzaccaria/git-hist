@@ -4,6 +4,7 @@ var {
 var _ = require('lodash')
 var fs = require('fs')
 var $S = require('string')
+var debug = require('debug')('index.js')
 
 var $s = require('shelljs')
 var $b = require('bluebird')
@@ -68,7 +69,8 @@ var getJson = (file, opts, nocheck) => {
             return getGitHistory(opts)
         }
     } else {
-        return $b.resolve(JSON.parse(gitCommandFile(file)))
+		var res = (gitCommandFile(file))
+        return $b.resolve(JSON.parse(res))
     }
 }
 
@@ -86,7 +88,6 @@ var getOptions = doc => {
     if (t.length > 0) {
         tags = t
     }
-    console.log(tags)
     return {
         help, file, opts, outfile, nocheck
     }
@@ -126,8 +127,13 @@ var outputMarkdown = (data, file) => {
             })
         }
     })
-    console.log(`Writing ${file}`)
-    return fs.writeFileAsync(file, content)
+	if(file === 'stdout') {
+		console.log(content)
+		return 0;
+	} else {
+		console.log(`Writing ${file}`)
+		return fs.writeFileAsync(file, content)
+	}
 }
 
 var doc = fs.readFileSync(__dirname + "/docs/usage.md", 'utf8')

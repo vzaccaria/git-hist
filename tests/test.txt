@@ -32,7 +32,7 @@
   "commit": "24635999cd9cf0cd797a21a13bb91a410e40e8e0",
   "author": "Vittorio Zaccaria <vittorio.zaccaria@gmail.com>",
   "date": "Mon Jul 6 15:25:19 2015 +0200",
-  "message": "Change signatures for testbench helpers and derive Lift instances for Inputs and outputs"
+  "message": "feat: change signatures for testbench helpers and derive Lift instances for Inputs and outputs"
 },
 {
   "commit": "7372e5e30f18678f6cb0acd7be3cfb6565d649e0",

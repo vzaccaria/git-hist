@@ -8,6 +8,7 @@ var docopt = _require.docopt;
 var _ = require("lodash");
 var fs = require("fs");
 var $S = require("string");
+var debug = require("debug")("index.js");
 
 var $s = require("shelljs");
 var $b = require("bluebird");
@@ -72,7 +73,8 @@ var getJson = function (file, opts, nocheck) {
             return getGitHistory(opts);
         }
     } else {
-        return $b.resolve(JSON.parse(gitCommandFile(file)));
+        var res = gitCommandFile(file);
+        return $b.resolve(JSON.parse(res));
     }
 };
 
@@ -90,7 +92,6 @@ var getOptions = function (doc) {
     if (t.length > 0) {
         tags = t;
     }
-    console.log(tags);
     return {
         help: help, file: file, opts: opts, outfile: outfile, nocheck: nocheck
     };
@@ -127,8 +128,13 @@ var outputMarkdown = function (data, file) {
             });
         }
     });
-    console.log("Writing " + file);
-    return fs.writeFileAsync(file, content);
+    if (file === "stdout") {
+        console.log(content);
+        return 0;
+    } else {
+        console.log("Writing " + file);
+        return fs.writeFileAsync(file, content);
+    }
 };
 
 var doc = fs.readFileSync(__dirname + "/docs/usage.md", "utf8");
@@ -144,6 +150,7 @@ var main = function () {
     var nocheck = _getOptions.nocheck;
 
     getJson(file, opts, nocheck).then(function (content) {
+        debug(content);
         return outputMarkdown(content, outfile);
     }).then(function () {
         console.log("done.");
