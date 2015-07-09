@@ -76,6 +76,8 @@ var getJson = function (file, opts, nocheck) {
     }
 };
 
+var tags = ["feat", "fix", "docs", "style", "refactor", "perf", "test", "chore"];
+
 var getOptions = function (doc) {
     "use strict";
     var o = docopt(doc);
@@ -84,14 +86,17 @@ var getOptions = function (doc) {
     var outfile = o.OUTFILE;
     var opts = o["--opts"] || "";
     var nocheck = o["--nostatus"] || false;
+    var t = _.words(o["--keywords"]);
+    if (t.length > 0) {
+        tags = t;
+    }
+    console.log(tags);
     return {
         help: help, file: file, opts: opts, outfile: outfile, nocheck: nocheck
     };
 };
 
 // https://github.com/angular/angular.js/blob/master/CONTRIBUTING.md
-
-var tags = ["feat", "fix", "docs", "style", "refactor", "perf", "test", "chore"];
 
 var descs = {
     feat: "New features",

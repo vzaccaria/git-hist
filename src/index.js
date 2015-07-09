@@ -42,7 +42,7 @@ var checkStatus = () => {
         if (it.length > 0) {
             return $b.reject("Sorry, repo not clean")
         } else {
-			console.log('ok')
+            console.log('ok')
             return $b.resolve("Ok.");
         }
     })
@@ -61,7 +61,7 @@ var getJson = (file, opts, nocheck) => {
     "use strict"
     if (_.isNull(file)) {
         if (!nocheck) {
-            return checkStatus().then( () => {
+            return checkStatus().then(() => {
                 return getGitHistory(opts)
             })
         } else {
@@ -72,6 +72,7 @@ var getJson = (file, opts, nocheck) => {
     }
 }
 
+var tags = ['feat', 'fix', 'docs', 'style', 'refactor', 'perf', 'test', 'chore'];
 
 var getOptions = doc => {
     "use strict"
@@ -81,6 +82,11 @@ var getOptions = doc => {
     var outfile = o['OUTFILE']
     var opts = o['--opts'] || '';
     var nocheck = o['--nostatus'] || false;
+    var t = _.words(o['--keywords'])
+    if (t.length > 0) {
+        tags = t
+    }
+    console.log(tags)
     return {
         help, file, opts, outfile, nocheck
     }
@@ -88,7 +94,6 @@ var getOptions = doc => {
 
 // https://github.com/angular/angular.js/blob/master/CONTRIBUTING.md
 
-var tags = ['feat', 'fix', 'docs', 'style', 'refactor', 'perf', 'test', 'chore'];
 
 var descs = {
     'feat': 'New features',
@@ -121,7 +126,7 @@ var outputMarkdown = (data, file) => {
             })
         }
     })
-	console.log(`Writing ${file}`)
+    console.log(`Writing ${file}`)
     return fs.writeFileAsync(file, content)
 }
 
@@ -132,14 +137,14 @@ var main = () => {
     var {
         file, opts, outfile, nocheck
     } = (getOptions(doc))
-    getJson(file, opts, nocheck).then( (content) => {
-		return outputMarkdown(content, outfile)
-	}).then(() => {
+    getJson(file, opts, nocheck).then((content) => {
+        return outputMarkdown(content, outfile)
+    }).then(() => {
         console.log("done.")
-		process.exit(0)
+        process.exit(0)
     }).caught(it => {
         console.log(`not done. ${it}`)
-		process.exit(1)
+        process.exit(1)
     })
 }
 
