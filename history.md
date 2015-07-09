@@ -1,6 +1,8 @@
 
 # New features
 
+-     add stdout output and initial tests (Thu Jul 9 18:41:32 2015 +0200) - [view](../../commit/af4ed7684dcd08f374487434a4c76a9ec76873d6) 
+-     allow custom subset of keywords to be used (Thu Jul 9 18:10:45 2015 +0200) - [view](../../commit/c824a42a8cb8855f5d83bd5bb12cb035aae22d4a) 
 -     check for repo clean status (Tue Jul 7 19:17:10 2015 +0200) - [view](../../commit/c9dcc12c3aa91742ecd980e773d6f2128c382b9a) 
 -     Invokes and parses output of git command (Tue Jul 7 10:53:28 2015 +0200) - [view](../../commit/d7dbbab6c6083f8ce46d0b9244b1c8d8669ed40b) 
 
