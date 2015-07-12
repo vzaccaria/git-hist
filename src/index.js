@@ -5,6 +5,7 @@ var _ = require('lodash')
 var fs = require('fs')
 var $S = require('string')
 var debug = require('debug')('index.js')
+var $m = require('moment')
 
 var $s = require('shelljs')
 var $b = require('bluebird')
@@ -69,7 +70,7 @@ var getJson = (file, opts, nocheck) => {
             return getGitHistory(opts)
         }
     } else {
-		var res = (gitCommandFile(file))
+        var res = (gitCommandFile(file))
         return $b.resolve(JSON.parse(res))
     }
 }
@@ -120,20 +121,29 @@ var outputMarkdown = (data, file) => {
                 return false
             }
         })
+
         if (d.length > 0) {
             content = content + `\n# ${descs[t]}\n\n`
-            _.forEach(d, (c) => {
-                content = content + `-    ${c.message} (${c.date}) - [view](../../commit/${c.commit}) \n`;
-            })
         }
+
+        d = _.groupBy(d, 'message')
+        _.forEach(d, (commits, message) => {
+            content = content + `-    ${message} -- `
+            if (commits.length > 0) {
+                var s = _.map(commits, c => {
+                    return `[${$m(new Date(c.date)).format('MMM Do YY')}](../../commit/${c.commit})`
+                })
+                content = content + s.join(', ') + '\n'
+            }
+        })
     })
-	if(file === 'stdout') {
-		console.log(content)
-		return 0;
-	} else {
-		console.log(`Writing ${file}`)
-		return fs.writeFileAsync(file, content)
-	}
+    if (file === 'stdout') {
+        console.log(content)
+        return 0;
+    } else {
+        console.log(`Writing ${file}`)
+        return fs.writeFileAsync(file, content)
+    }
 }
 
 var doc = fs.readFileSync(__dirname + "/docs/usage.md", 'utf8')

@@ -9,6 +9,7 @@ var _ = require("lodash");
 var fs = require("fs");
 var $S = require("string");
 var debug = require("debug")("index.js");
+var $m = require("moment");
 
 var $s = require("shelljs");
 var $b = require("bluebird");
@@ -121,12 +122,21 @@ var outputMarkdown = function (data, file) {
                 return false;
             }
         });
+
         if (d.length > 0) {
             content = content + ("\n# " + descs[t] + "\n\n");
-            _.forEach(d, function (c) {
-                content = content + ("-    " + c.message + " (" + c.date + ") - [view](../../commit/" + c.commit + ") \n");
-            });
         }
+
+        d = _.groupBy(d, "message");
+        _.forEach(d, function (commits, message) {
+            content = content + ("-    " + message + " -- ");
+            if (commits.length > 0) {
+                var s = _.map(commits, function (c) {
+                    return "[" + $m(new Date(c.date)).format("MMM Do YY") + "](../../commit/" + c.commit + ")";
+                });
+                content = content + s.join(", ") + "\n";
+            }
+        });
     });
     if (file === "stdout") {
         console.log(content);
