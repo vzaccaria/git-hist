@@ -92,6 +92,7 @@ var getOptions = function (doc) {
     var nocheck = o["--nostatus"] || false;
     var kw = o["--keywords"] || "";
     var t = _.words(kw);
+    if (!file) file = null;
     if (t.length > 0) {
         tags = t;
     }
@@ -161,6 +162,7 @@ var main = function () {
     var outfile = _getOptions.outfile;
     var nocheck = _getOptions.nocheck;
 
+    debug({ file: file, opts: opts, outfile: outfile, nocheck: nocheck });
     getJson(file, opts, nocheck).then(function (content) {
         return outputMarkdown(content, outfile);
     }).then(function () {

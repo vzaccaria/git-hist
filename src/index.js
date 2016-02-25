@@ -88,6 +88,8 @@ var getOptions = doc => {
     var nocheck = o['--nostatus'] || false;
     var kw = o['--keywords'] || "";
     var t = _.words(kw)
+    if(!file)
+        file=null
     if (t.length > 0) {
         tags = t
     }
@@ -155,6 +157,7 @@ var main = () => {
     var {
         file, opts, outfile, nocheck
     } = (getOptions(doc))
+    debug({file, opts, outfile, nocheck})
     getJson(file, opts, nocheck).then((content) => {
         return outputMarkdown(content, outfile)
     }).then(() => {
