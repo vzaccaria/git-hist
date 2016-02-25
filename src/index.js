@@ -51,11 +51,9 @@ var checkStatus = () => {
 }
 
 var getGitHistory = (opts) => {
-    debug(gitCommand(opts))
     return $s.execAsync(gitCommand(opts), {
         silent: true
     }).then((output) => {
-        debug(output)
         var s = `[${output.replace(/,$/gi, '')}]`
         return JSON.parse(s)
     })
@@ -73,7 +71,8 @@ var getJson = (file, opts, nocheck) => {
         }
     } else {
         var res = (gitCommandFile(file))
-        return $b.resolve(JSON.parse(res))
+        var t = JSON.parse(res);
+        return $b.resolve(t)
     }
 }
 
@@ -87,7 +86,8 @@ var getOptions = doc => {
     var outfile = o['OUTFILE']
     var opts = o['--opts'] || '';
     var nocheck = o['--nostatus'] || false;
-    var t = _.words(o['--keywords'])
+    var kw = o['--keywords'] || "";
+    var t = _.words(kw)
     if (t.length > 0) {
         tags = t
     }
