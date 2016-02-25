@@ -1,6 +1,6 @@
 {
   "name": "git-hist",
-  "version": "0.0.5",
+  "version": "0.1.0",
   "description": "Generate a HISTORY.md from git log",
   "main": "index.js",
   "bin": {
