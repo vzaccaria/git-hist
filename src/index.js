@@ -51,9 +51,11 @@ var checkStatus = () => {
 }
 
 var getGitHistory = (opts) => {
+    debug(gitCommand(opts))
     return $s.execAsync(gitCommand(opts), {
         silent: true
     }).then((output) => {
+        debug(output)
         var s = `[${output.replace(/,$/gi, '')}]`
         return JSON.parse(s)
     })

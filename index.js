@@ -55,9 +55,11 @@ var checkStatus = function () {
 };
 
 var getGitHistory = function (opts) {
+    debug(gitCommand(opts));
     return $s.execAsync(gitCommand(opts), {
         silent: true
     }).then(function (output) {
+        debug(output);
         var s = "[" + output.replace(/,$/gi, "") + "]";
         return JSON.parse(s);
     });
